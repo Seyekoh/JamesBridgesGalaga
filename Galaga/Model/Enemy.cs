@@ -10,13 +10,10 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private const String ENEMYTYPE1 = "enemySprite_type1";
-        private const String ENEMYTYPE2 = "enemySprite_type2";
-        private const String ENEMYTYPE3 = "enemySprite_type3";
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
 
-        public String type;
+        public GlobalEnums.EnemySpriteType type;
 
         #endregion
 
@@ -29,7 +26,7 @@ namespace Galaga.Model
         public Enemy()
         {
             Sprite = new EnemySprite_type1();
-            this.type = ENEMYTYPE1;
+            this.type = GlobalEnums.EnemySpriteType.TYPE1;
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
@@ -41,22 +38,22 @@ namespace Galaga.Model
         ///     The type of enemy ship to create
         /// </param>
         /// <exception cref="ArgumentException"></exception>
-        public Enemy(String enemyType)
+        public Enemy(GlobalEnums.EnemySpriteType enemyType)
         {
-            if (enemyType.Equals(ENEMYTYPE1))
+            if (enemyType.Equals(GlobalEnums.EnemySpriteType.TYPE1))
             {
                 Sprite = new EnemySprite_type1();
-                this.type = ENEMYTYPE1;
+                this.type = GlobalEnums.EnemySpriteType.TYPE1;
             }
-            else if (enemyType.Equals(ENEMYTYPE2))
+            else if (enemyType.Equals(GlobalEnums.EnemySpriteType.TYPE2))
             {
                 Sprite = new EnemySprite_type2();
-                this.type = ENEMYTYPE2;
+                this.type = GlobalEnums.EnemySpriteType.TYPE2;
             }
-            else if (enemyType.Equals(ENEMYTYPE3))
+            else if (enemyType.Equals(GlobalEnums.EnemySpriteType.TYPE3))
             {
                 Sprite = new EnemySprite_type3();
-                this.type = ENEMYTYPE3;
+                this.type = GlobalEnums.EnemySpriteType.TYPE3;
             }
             else
             {

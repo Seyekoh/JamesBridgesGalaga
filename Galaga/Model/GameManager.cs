@@ -16,6 +16,7 @@ namespace Galaga.Model
         private readonly double canvasWidth;
 
         private Player player;
+        private EnemyManager enemyManager;
 
         #endregion
 
@@ -31,6 +32,8 @@ namespace Galaga.Model
             this.canvas = canvas;
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
+
+            this.enemyManager = new EnemyManager(canvas);
 
             this.initializeGame();
         }
