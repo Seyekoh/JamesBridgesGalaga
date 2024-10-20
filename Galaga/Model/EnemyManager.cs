@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -20,6 +21,9 @@ namespace Galaga.Model
         private IList<Enemy> Type_2_Enemies;
         private IList<Enemy> Type_3_Enemies;
 
+        private DispatcherTimer timer;
+        private int timerCounter = -5;
+
         #endregion
 
         #region Constructors
@@ -38,6 +42,11 @@ namespace Galaga.Model
             this.canvas = canvas;
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
+
+            this.timer = new DispatcherTimer();
+            this.timer.Interval = TimeSpan.FromMilliseconds(500);
+            this.timer.Tick += timer_Tick;
+            this.timer.Start();
 
             this.Type_1_Enemies = new List<Enemy>();
             this.Type_2_Enemies = new List<Enemy>();
@@ -120,9 +129,45 @@ namespace Galaga.Model
 
             for (int i = 0; i < enemies.Count; i++)
             {
-                double xPositioin = startX + i * (enemies[i].Width + EnemyBuffer);
-                enemies[i].X = xPositioin;
+                double xPosition = startX + i * (enemies[i].Width + EnemyBuffer);
+                enemies[i].X = xPosition;
                 enemies[i].Y = yPosition;
+
+                enemies[i].InitialX = xPosition;
+            }
+        }
+
+        private void timer_Tick(object sender, object e)
+        {
+            this.updateEnemyMovement(this.Type_1_Enemies);
+            this.updateEnemyMovement(this.Type_2_Enemies);
+            this.updateEnemyMovement(this.Type_3_Enemies);
+        }
+
+        private void updateEnemyMovement(IList<Enemy> enemies)
+        {
+            foreach (var enemy in enemies)
+            {
+                var x = Canvas.GetLeft(enemy.Sprite);
+
+                if (enemy.MovingRight)
+                {
+                    Canvas.SetLeft(enemy.Sprite, x + enemy.SpeedX);
+
+                    if (x >= enemy.InitialX + 5 * enemy.SpeedX)
+                    {
+                        enemy.MovingRight = false;
+                    }
+                }
+                else
+                {
+                    Canvas.SetLeft(enemy.Sprite, x - enemy.SpeedX);
+
+                    if (x <= enemy.InitialX - 5 * enemy.SpeedX)
+                    {
+                        enemy.MovingRight = true;
+                    }
+                }
             }
         }
 

@@ -13,6 +13,9 @@ namespace Galaga.Model
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
 
+        public double InitialX { get; set; }
+        public bool MovingRight { get; set; } = true;
+
         public GlobalEnums.EnemySpriteType type;
 
         #endregion
