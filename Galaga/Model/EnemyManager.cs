@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Windows.UI.Xaml;
+using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -14,15 +14,15 @@ namespace Galaga.Model
 
         private const double EnemyBuffer = 10;
         private readonly Canvas canvas;
-        private readonly double canvasHeight;
         private readonly double canvasWidth;
+
+        private GameManager gameManager;
 
         private IList<Enemy> Type_1_Enemies;
         private IList<Enemy> Type_2_Enemies;
         private IList<Enemy> Type_3_Enemies;
 
-        private DispatcherTimer timer;
-        private int timerCounter = -5;
+        private Ticker ticker;
 
         #endregion
 
@@ -35,18 +35,14 @@ namespace Galaga.Model
         ///     The canvas to draw the enemies on.
         /// </param>
         /// <exception cref="ArgumentNullException"></exception>
-        public EnemyManager(Canvas canvas)
+        public EnemyManager(GameManager gameManager, Canvas canvas)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
 
             this.canvas = canvas;
-            this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
 
-            this.timer = new DispatcherTimer();
-            this.timer.Interval = TimeSpan.FromMilliseconds(500);
-            this.timer.Tick += timer_Tick;
-            this.timer.Start();
+            this.gameManager = gameManager;
 
             this.Type_1_Enemies = new List<Enemy>();
             this.Type_2_Enemies = new List<Enemy>();
@@ -61,6 +57,8 @@ namespace Galaga.Model
 
         private void initializeGame()
         {
+            this.ticker = this.gameManager.GetTicker();
+            this.ticker.Tick += this.timer_Tick;
             this.createAndPlaceEnemies();
         }
 
@@ -121,7 +119,10 @@ namespace Galaga.Model
 
         private void placeRowEnemies(IList<Enemy> enemies, double yPosition)
         {
-            if (enemies.Count == 0) return;
+            if (enemies.Count == 0)
+            {
+                return;
+            }
 
             double totalRowWidth = enemies.Count * enemies[0].Width + (enemies.Count - 1) * EnemyBuffer;
 
@@ -169,6 +170,55 @@ namespace Galaga.Model
                     }
                 }
             }
+        }
+
+        public bool CheckBulletCollision(Bullet bullet)
+        {
+            foreach (var enemy in this.Type_1_Enemies)
+            {
+                if (IsCollision(bullet, enemy))
+                {
+                    RemoveEnemy(enemy);
+                    return true;
+                }
+            }
+
+            foreach (var enemy in this.Type_2_Enemies)
+            {
+                if (IsCollision(bullet, enemy))
+                {
+                    RemoveEnemy(enemy);
+                    return true;
+                }
+            }
+
+            foreach (var enemy in this.Type_3_Enemies)
+            {
+                if (IsCollision(bullet, enemy))
+                {
+                    RemoveEnemy(enemy);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsCollision(Bullet bullet, Enemy enemy)
+        {
+            Rect bulletBox = bullet.getBoundingBox();
+            Rect enemyBox = enemy.GetBoundingBox();
+
+            return bulletBox.IntersectsWith(enemyBox);
+        }
+
+        private void RemoveEnemy(Enemy enemy)
+        {
+            this.canvas.Children.Remove(enemy.Sprite);
+
+            this.Type_1_Enemies.Remove(enemy);
+            this.Type_2_Enemies.Remove(enemy);
+            this.Type_3_Enemies.Remove(enemy);
         }
 
         #endregion

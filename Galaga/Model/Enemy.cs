@@ -1,4 +1,5 @@
 using System;
+using Windows.Foundation;
 using Galaga.View.Sprites;
 
 namespace Galaga.Model
@@ -64,6 +65,11 @@ namespace Galaga.Model
             }
 
             SetSpeed(SpeedXDirection, SpeedYDirection);
+        }
+
+        public Rect GetBoundingBox()
+        {
+            return new Rect(this.X, this.Y, this.Width, this.Height);
         }
 
         #endregion

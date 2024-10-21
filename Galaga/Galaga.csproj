@@ -120,18 +120,24 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\Enemy.cs" />
     <Compile Include="Model\EnemyManager.cs" />
     <Compile Include="Model\GameManager.cs" />
     <Compile Include="Model\GameObject.cs" />
     <Compile Include="Model\GlobalEnums.cs" />
     <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Rect.cs" />
+    <Compile Include="Model\Ticker.cs" />
     <Compile Include="View\GameCanvas.xaml.cs">
       <DependentUpon>GameCanvas.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Sprites\BaseSprite.xaml.cs">
       <DependentUpon>BaseSprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\BulletSprite.xaml.cs">
+      <DependentUpon>BulletSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\EnemySprite_type1.xaml.cs">
       <DependentUpon>EnemySprite_type1.xaml</DependentUpon>
@@ -174,6 +180,10 @@
     <Page Include="View\Sprites\BaseSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\BulletSprite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Sprites\EnemySprite_type1.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -25,6 +25,15 @@ namespace Galaga.Model
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
+        public Bullet Shoot()
+        {
+            Bullet bullet = new Bullet();
+            bullet.X = this.X + (this.Width / 2.0) - (bullet.Width / 2);
+            bullet.Y = this.Y;
+
+            return bullet;
+        }
+
         #endregion
     }
 }

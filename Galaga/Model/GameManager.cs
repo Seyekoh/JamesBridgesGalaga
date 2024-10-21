@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -17,6 +18,8 @@ namespace Galaga.Model
 
         private Player player;
         private EnemyManager enemyManager;
+        private Ticker ticker;
+        private IList<Bullet> playerBullets;
 
         #endregion
 
@@ -33,7 +36,13 @@ namespace Galaga.Model
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
 
-            this.enemyManager = new EnemyManager(canvas);
+            this.ticker = new Ticker();
+            this.ticker.Tick += this.timer_Tick;
+            this.ticker.Start();
+
+            this.enemyManager = new EnemyManager(this, canvas);
+
+            this.playerBullets = new List<Bullet>();
 
             this.initializeGame();
         }
@@ -80,6 +89,48 @@ namespace Galaga.Model
             if (this.player.X < this.canvasWidth - this.player.Width - this.player.SpeedX)
             {
                 this.player.MoveRight();
+            }
+        }
+
+        public Ticker GetTicker()
+        {
+            return this.ticker;
+        }
+
+        public void PlayerShoot()
+        {
+            if (this.playerBullets.Count >= 1)
+            {
+                return;
+            }
+            Bullet bullet = this.player.Shoot();
+            if (bullet != null)
+            {
+                this.playerBullets.Add(bullet);
+                this.canvas.Children.Add(bullet.Sprite);
+            }
+        }
+
+        public void timer_Tick(object sender, object e)
+        {
+            if (this.playerBullets.Count == 0)
+            {
+                return;
+            }
+
+            Bullet bullet = this.playerBullets[0];
+            bullet.MoveUp();
+
+            if (this.enemyManager.CheckBulletCollision(bullet))
+            {
+                this.canvas.Children.Remove(bullet.Sprite);
+                this.playerBullets.RemoveAt(0);
+            }
+
+            if (bullet.Y < 0)
+            {
+                this.canvas.Children.Remove(bullet.Sprite);
+                this.playerBullets.RemoveAt(0);
             }
         }
 
