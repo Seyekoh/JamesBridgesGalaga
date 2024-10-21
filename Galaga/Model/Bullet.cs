@@ -27,12 +27,6 @@ namespace Galaga.Model
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
-        public void Move()
-        {
-            this.Y -= this.SpeedY;
-            Canvas.SetTop(this.Sprite, this.Y);
-        }
-
         public Rect getBoundingBox()
         {
             return new Rect(this.X, this.Y, this.Width, this.Height);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 
@@ -22,6 +23,9 @@ namespace Galaga.Model
         private IList<Enemy> Type_2_Enemies;
         private IList<Enemy> Type_3_Enemies;
 
+        private Random random = new Random();
+        public IList<Bullet> enemyBullets;
+
         private Ticker ticker;
 
         #endregion
@@ -43,6 +47,8 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.gameManager = gameManager;
+
+            this.enemyBullets = new List<Bullet>();
 
             this.Type_1_Enemies = new List<Enemy>();
             this.Type_2_Enemies = new List<Enemy>();
@@ -138,11 +144,36 @@ namespace Galaga.Model
             }
         }
 
-        private void timer_Tick(object sender, object e)
+        private async void timer_Tick(object sender, object e)
         {
             this.updateEnemyMovement(this.Type_1_Enemies);
             this.updateEnemyMovement(this.Type_2_Enemies);
             this.updateEnemyMovement(this.Type_3_Enemies);
+
+            foreach (var bullet in this.enemyBullets)
+            {
+                var y = Canvas.GetTop(bullet.Sprite);
+
+                Canvas.SetTop(bullet.Sprite, y + bullet.SpeedY);
+            }
+
+            List<Enemy> enemiesToRemove = new List<Enemy>();
+
+            foreach (var enemy in this.Type_3_Enemies)
+            {
+                if (this.random.Next(0, 10) >= 9)
+                {
+                    Bullet bullet = enemy.Shoot();
+                    if (bullet != null)
+                    {
+                        this.enemyBullets.Add(bullet);
+                        this.canvas.Children.Add(bullet.Sprite);
+                    }
+                }
+            }
+
+            await Task.Delay(this.random.Next(3000, 5000));
+            
         }
 
         private void updateEnemyMovement(IList<Enemy> enemies)
@@ -176,27 +207,27 @@ namespace Galaga.Model
         {
             foreach (var enemy in this.Type_1_Enemies)
             {
-                if (IsCollision(bullet, enemy))
+                if (this.IsCollision(bullet, enemy))
                 {
-                    RemoveEnemy(enemy);
-                    return true;
-                }
-            }
-
-            foreach (var enemy in this.Type_2_Enemies)
-            {
-                if (IsCollision(bullet, enemy))
-                {
-                    RemoveEnemy(enemy);
+                    this.RemoveEnemy(enemy);
                     return true;
                 }
             }
 
             foreach (var enemy in this.Type_3_Enemies)
             {
-                if (IsCollision(bullet, enemy))
+                if (this.IsCollision(bullet, enemy))
                 {
-                    RemoveEnemy(enemy);
+                    this.RemoveEnemy(enemy);
+                    return true;
+                }
+            }
+
+            foreach (var enemy in this.Type_2_Enemies)
+            {
+                if (this.IsCollision(bullet, enemy))
+                {
+                    this.RemoveEnemy(enemy);
                     return true;
                 }
             }
@@ -216,9 +247,19 @@ namespace Galaga.Model
         {
             this.canvas.Children.Remove(enemy.Sprite);
 
-            this.Type_1_Enemies.Remove(enemy);
-            this.Type_2_Enemies.Remove(enemy);
-            this.Type_3_Enemies.Remove(enemy);
+            var type = enemy.type;
+            switch (type)
+            {
+                case GlobalEnums.EnemySpriteType.TYPE1:
+                    this.Type_1_Enemies.Remove(enemy);
+                    break;
+                case GlobalEnums.EnemySpriteType.TYPE2:
+                    this.Type_2_Enemies.Remove(enemy);
+                    break;
+                case GlobalEnums.EnemySpriteType.TYPE3:
+                    this.Type_3_Enemies.Remove(enemy);
+                    break;
+            }
         }
 
         #endregion

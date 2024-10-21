@@ -16,6 +16,7 @@ namespace Galaga.Model
 
         public double InitialX { get; set; }
         public bool MovingRight { get; set; } = true;
+        
 
         public GlobalEnums.EnemySpriteType type;
 
@@ -65,6 +66,14 @@ namespace Galaga.Model
             }
 
             SetSpeed(SpeedXDirection, SpeedYDirection);
+        }
+
+        public Bullet Shoot()
+        {
+            Bullet bullet = new Bullet();
+            bullet.X = this.X + (this.Width / 2) - (bullet.Width / 2);
+            bullet.Y = this.Y + this.Height;
+            return bullet;
         }
 
         public Rect GetBoundingBox()

@@ -113,25 +113,47 @@ namespace Galaga.Model
 
         public void timer_Tick(object sender, object e)
         {
-            if (this.playerBullets.Count == 0)
+            if (this.playerBullets.Count > 0)
             {
-                return;
+                Bullet bullet = this.playerBullets[0];
+                bullet.MoveUp();
+
+                if (this.enemyManager.CheckBulletCollision(bullet))
+                {
+                    this.canvas.Children.Remove(bullet.Sprite);
+                    this.playerBullets.RemoveAt(0);
+                }
+
+                if (bullet.Y < 0)
+                {
+                    this.canvas.Children.Remove(bullet.Sprite);
+                    this.playerBullets.RemoveAt(0);
+                }
             }
 
-            Bullet bullet = this.playerBullets[0];
-            bullet.MoveUp();
-
-            if (this.enemyManager.CheckBulletCollision(bullet))
+            foreach (var enemyBullet in this.enemyManager.enemyBullets)
             {
-                this.canvas.Children.Remove(bullet.Sprite);
-                this.playerBullets.RemoveAt(0);
+                if (CheckPlayerCollision(enemyBullet))
+                {
+                    //Todo: Game over
+                }
+
+                if (enemyBullet.Y > this.canvasHeight)
+                {
+                    this.canvas.Children.Remove(enemyBullet.Sprite);
+                    this.enemyManager.enemyBullets.Remove(enemyBullet);
+                }
             }
 
-            if (bullet.Y < 0)
-            {
-                this.canvas.Children.Remove(bullet.Sprite);
-                this.playerBullets.RemoveAt(0);
-            }
+
+        }
+
+        private bool CheckPlayerCollision(Bullet bullet)
+        {
+            return (bullet.X < this.player.X + this.player.Width &&
+                    bullet.X + bullet.Width > this.player.X &&
+                    bullet.Y < this.player.Y + this.player.Height &&
+                    bullet.Y + bullet.Height > this.player.Y);
         }
 
         #endregion
