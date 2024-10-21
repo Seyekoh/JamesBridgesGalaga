@@ -20,6 +20,9 @@ namespace Galaga.Model
         private EnemyManager enemyManager;
         private Ticker ticker;
         private IList<Bullet> playerBullets;
+        private TextBlock scoreTextBlock;
+
+        public int Score { get; private set; }
 
         #endregion
 
@@ -28,13 +31,15 @@ namespace Galaga.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="GameManager"/> class.
         /// </summary>
-        public GameManager(Canvas canvas)
+        public GameManager(Canvas canvas, TextBlock scoreTextBlock)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
 
             this.canvas = canvas;
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
+
+            this.scoreTextBlock = scoreTextBlock;
 
             this.ticker = new Ticker();
             this.ticker.Tick += this.timer_Tick;
@@ -43,6 +48,7 @@ namespace Galaga.Model
             this.enemyManager = new EnemyManager(this, canvas);
 
             this.playerBullets = new List<Bullet>();
+            this.Score = 0;
 
             this.initializeGame();
         }
@@ -154,6 +160,17 @@ namespace Galaga.Model
                     bullet.X + bullet.Width > this.player.X &&
                     bullet.Y < this.player.Y + this.player.Height &&
                     bullet.Y + bullet.Height > this.player.Y);
+        }
+
+        public void AddScore(int points)
+        {
+            this.Score += points;
+            this.updateScoreUI(this.scoreTextBlock);
+        }
+
+        public void updateScoreUI(TextBlock scoreTextBlock)
+        {
+            scoreTextBlock.Text = "Score: " + this.Score.ToString();
         }
 
         #endregion

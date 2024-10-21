@@ -247,19 +247,25 @@ namespace Galaga.Model
         {
             this.canvas.Children.Remove(enemy.Sprite);
 
+            int points = 0;
             var type = enemy.type;
             switch (type)
             {
                 case GlobalEnums.EnemySpriteType.TYPE1:
                     this.Type_1_Enemies.Remove(enemy);
+                    points = 10;
                     break;
                 case GlobalEnums.EnemySpriteType.TYPE2:
                     this.Type_2_Enemies.Remove(enemy);
+                    points = 20;
                     break;
                 case GlobalEnums.EnemySpriteType.TYPE3:
                     this.Type_3_Enemies.Remove(enemy);
+                    points = 30;
                     break;
             }
+
+            this.gameManager.AddScore(points);
         }
 
         #endregion
