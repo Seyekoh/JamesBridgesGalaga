@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -18,15 +17,16 @@ namespace Galaga.Model
         private readonly double canvasWidth;
 
         private GameManager gameManager;
+        private Ticker ticker;
+        private Random random = new Random();
 
         private IList<Enemy> Type_1_Enemies;
         private IList<Enemy> Type_2_Enemies;
         private IList<Enemy> Type_3_Enemies;
 
-        private Random random = new Random();
         public IList<Bullet> enemyBullets;
 
-        private Ticker ticker;
+        public int totalEnemies => this.Type_1_Enemies.Count + this.Type_2_Enemies.Count + this.Type_3_Enemies.Count;
 
         #endregion
 
@@ -35,6 +35,9 @@ namespace Galaga.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="EnemyManager"/> class.
         /// </summary>
+        /// <param name="gameManager">
+        ///     The game manager being used.
+        /// </param>
         /// <param name="canvas">
         ///     The canvas to draw the enemies on.
         /// </param>
@@ -154,10 +157,8 @@ namespace Galaga.Model
             {
                 var y = Canvas.GetTop(bullet.Sprite);
 
-                Canvas.SetTop(bullet.Sprite, y + bullet.SpeedY);
+                bullet.MoveDown();
             }
-
-            List<Enemy> enemiesToRemove = new List<Enemy>();
 
             foreach (var enemy in this.Type_3_Enemies)
             {
@@ -237,7 +238,7 @@ namespace Galaga.Model
 
         private bool IsCollision(Bullet bullet, Enemy enemy)
         {
-            Rect bulletBox = bullet.getBoundingBox();
+            Rect bulletBox = bullet.GetBoundingBox();
             Rect enemyBox = enemy.GetBoundingBox();
 
             return bulletBox.IntersectsWith(enemyBox);

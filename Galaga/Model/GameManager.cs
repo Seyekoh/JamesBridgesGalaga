@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -21,6 +22,7 @@ namespace Galaga.Model
         private Ticker ticker;
         private IList<Bullet> playerBullets;
         private TextBlock scoreTextBlock;
+        private TextBlock gameOverBlock;
 
         public int Score { get; private set; }
 
@@ -31,7 +33,7 @@ namespace Galaga.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="GameManager"/> class.
         /// </summary>
-        public GameManager(Canvas canvas, TextBlock scoreTextBlock)
+        public GameManager(Canvas canvas, TextBlock scoreTextBlock, TextBlock gameOverBlock)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
 
@@ -40,6 +42,7 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.scoreTextBlock = scoreTextBlock;
+            this.gameOverBlock = gameOverBlock;
 
             this.ticker = new Ticker();
             this.ticker.Tick += this.timer_Tick;
@@ -119,6 +122,11 @@ namespace Galaga.Model
 
         public void timer_Tick(object sender, object e)
         {
+            if (this.enemyManager.totalEnemies == 0)
+            {
+                this.displayGameWin();
+            }
+
             if (this.playerBullets.Count > 0)
             {
                 Bullet bullet = this.playerBullets[0];
@@ -137,29 +145,46 @@ namespace Galaga.Model
                 }
             }
 
+            List<Bullet> bulletsToRemove = new List<Bullet>();
+
             foreach (var enemyBullet in this.enemyManager.enemyBullets)
             {
-                if (CheckPlayerCollision(enemyBullet))
+                if (this.IsCollision(enemyBullet, this.player))
                 {
-                    //Todo: Game over
+                    Debug.WriteLine("HIT!!!");
+                    bulletsToRemove.Add(enemyBullet);
+                    this.canvas.Children.Remove(this.player.Sprite);
+                    this.ticker.Stop();
+                    this.displayGameLose();
                 }
+                Debug.WriteLine("MISS!!!");
 
                 if (enemyBullet.Y > this.canvasHeight)
                 {
                     this.canvas.Children.Remove(enemyBullet.Sprite);
-                    this.enemyManager.enemyBullets.Remove(enemyBullet);
+                    bulletsToRemove.Add(enemyBullet);
                 }
+            }
+
+            foreach (var bullet in bulletsToRemove)
+            {
+                this.enemyManager.enemyBullets.Remove(bullet);
+                this.canvas.Children.Remove(bullet.Sprite);
             }
 
 
         }
 
-        private bool CheckPlayerCollision(Bullet bullet)
+        private bool IsCollision(Bullet bullet, Player player)
         {
-            return (bullet.X < this.player.X + this.player.Width &&
-                    bullet.X + bullet.Width > this.player.X &&
-                    bullet.Y < this.player.Y + this.player.Height &&
-                    bullet.Y + bullet.Height > this.player.Y);
+            Debug.WriteLine("Checking collision...");
+            Rect bulletBox = bullet.GetBoundingBox();
+            Rect playerBox = player.GetBoundingBox();
+
+            Debug.WriteLine($"Bullet Box: {bulletBox}");
+            Debug.WriteLine($"Payer Box: {playerBox}");
+
+            return bulletBox.IntersectsWith(playerBox);
         }
 
         public void AddScore(int points)
@@ -171,6 +196,16 @@ namespace Galaga.Model
         public void updateScoreUI(TextBlock scoreTextBlock)
         {
             scoreTextBlock.Text = "Score: " + this.Score.ToString();
+        }
+
+        public void displayGameLose()
+        {
+            this.gameOverBlock.Text = "Game Over! \n  You Lose" ;
+        }
+
+        public void displayGameWin()
+        {
+            this.gameOverBlock.Text = "Game Over! \n  You Win";
         }
 
         #endregion

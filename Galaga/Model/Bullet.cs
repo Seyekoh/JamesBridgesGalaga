@@ -15,7 +15,7 @@ namespace Galaga.Model
         #region Data members
 
         private const int SpeedXDirection = 0;
-        private const int SpeedYDirection = 35;
+        private const int SpeedYDirection = 25;
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace Galaga.Model
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
-        public Rect getBoundingBox()
+        public Rect GetBoundingBox()
         {
             return new Rect(this.X, this.Y, this.Width, this.Height);
         }

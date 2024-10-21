@@ -17,10 +17,15 @@ namespace Galaga.Model
 
         public bool IntersectsWith(Rect other)
         {
-            return X < other.X + other.Width &&
-                   X + Width > other.X &&
-                   Y < other.Y + other.Height &&
-                   Y + Height > other.Y;
+            return this.X < other.X + other.Width &&
+                   this.X + this.Width > other.X &&
+                   this.Y < other.Y + other.Height &&
+                   this.Y + this.Height > other.Y;
+        }
+
+        public override string ToString()
+        {
+            return $"X: {X}, Y: {Y}, Width: {Width}, Height: {Height}";
         }
     }
 }

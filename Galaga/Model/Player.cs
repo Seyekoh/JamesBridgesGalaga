@@ -34,6 +34,11 @@ namespace Galaga.Model
             return bullet;
         }
 
+        public Rect GetBoundingBox()
+        {
+            return new Rect(this.X, this.Y, this.Width, this.Height);
+        }
+
         #endregion
     }
 }

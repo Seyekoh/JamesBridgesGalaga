@@ -31,7 +31,7 @@ namespace Galaga.View
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
 
-            this.gameManager = new GameManager(this.canvas, this.ScoreText);
+            this.gameManager = new GameManager(this.canvas, this.ScoreText, this.GameOverText);
         }
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
