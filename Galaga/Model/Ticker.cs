@@ -4,25 +4,27 @@ using Windows.UI.Xaml;
 namespace Galaga.Model
 {
     /// <summary>
-    /// Represents a ticker in the game.
+    ///     Represents a ticker in the game.
     /// </summary>
     public class Ticker
     {
         #region Data members
 
-        private DispatcherTimer timer;
+        private const int Interval = 500;
+
+        private readonly DispatcherTimer timer;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Constructs a new instance of the <see cref="Ticker"/> class.
+        ///     Constructs a new instance of the <see cref="Ticker" /> class.
         /// </summary>
         public Ticker()
         {
             this.timer = new DispatcherTimer();
-            this.timer.Interval = TimeSpan.FromMilliseconds(500);
+            this.timer.Interval = TimeSpan.FromMilliseconds(Interval);
             this.timer.Tick += this.timer_Tick;
         }
 
@@ -31,7 +33,7 @@ namespace Galaga.Model
         #region Methods
 
         /// <summary>
-        /// Starts the ticker.
+        ///     Starts the ticker.
         /// </summary>
         public void Start()
         {
@@ -39,13 +41,16 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Stops the ticker.
+        ///     Stops the ticker.
         /// </summary>
         public void Stop()
         {
             this.timer.Stop();
         }
 
+        /// <summary>
+        ///     Event handler for the ticker.
+        /// </summary>
         public event EventHandler Tick;
 
         private void timer_Tick(object sender, object e)

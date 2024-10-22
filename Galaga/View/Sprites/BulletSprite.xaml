@@ -12,11 +12,12 @@
     Width="50">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BulletBaseColor" Color="Firebrick"/>
+        <SolidColorBrush x:Key="BulletBaseColor" Color="Firebrick" />
     </UserControl.Resources>
 
     <Canvas>
-        <Line X1="25" Y1="25" X2="25" Y2="35" Stroke="{StaticResource BulletBaseColor}" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Line X1="25" Y1="25" X2="25" Y2="35" Stroke="{StaticResource BulletBaseColor}" StrokeThickness="3"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Canvas>
 
 </local:BaseSprite>

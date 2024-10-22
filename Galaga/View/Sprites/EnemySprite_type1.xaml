@@ -12,33 +12,45 @@
     Width="50">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="ShipBaseColor" Color="DarkSlateGray"/>
-        <SolidColorBrush x:Key="CockpitColor" Color="LightCoral"/>
-        <SolidColorBrush x:Key="EngineFireColor" Color="Red"/>
+        <SolidColorBrush x:Key="ShipBaseColor" Color="DarkSlateGray" />
+        <SolidColorBrush x:Key="CockpitColor" Color="LightCoral" />
+        <SolidColorBrush x:Key="EngineFireColor" Color="Red" />
     </UserControl.Resources>
 
     <Canvas>
-		<!--Apply a rotation of 180 degrees-->
+        <!--Apply a rotation of 180 degrees-->
         <Canvas.RenderTransform>
-			<RotateTransform Angle="180" CenterX="25" CenterY="30"/>
+            <RotateTransform Angle="180" CenterX="25" CenterY="30" />
         </Canvas.RenderTransform>
 
-        <Line X1="25" Y1="0" X2="25" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Line X1="25" Y1="10" X2="25" Y2="18" Stroke="{StaticResource CockpitColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Line X1="25" Y1="0" X2="25" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="25" Y1="10" X2="25" Y2="18" Stroke="{StaticResource CockpitColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-        <Line X1="20" Y1="5" X2="20" Y2="50" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Line X1="20" Y1="45" X2="20" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Line X1="20" Y1="5" X2="20" Y2="50" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="20" Y1="45" X2="20" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-        <Line X1="30" Y1="5" X2="30" Y2="50" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Line X1="30" Y1="45" X2="30" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Line X1="30" Y1="5" X2="30" Y2="50" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="30" Y1="45" X2="30" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-        <Line X1="30" Y1="25" X2="40" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Line X1="30" Y1="35" X2="40" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Line X1="40" Y1="25" X2="40" Y2="48" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Line X1="30" Y1="25" X2="40" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="30" Y1="35" X2="40" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="40" Y1="25" X2="40" Y2="48" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-        <Line X1="20" Y1="25" X2="10" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Line X1="20" Y1="35" X2="10" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Line X1="10" Y1="25" X2="10" Y2="48" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Line X1="20" Y1="25" X2="10" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="20" Y1="35" X2="10" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Line X1="10" Y1="25" X2="10" Y2="48" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
+              HorizontalAlignment="Center" VerticalAlignment="Center" />
 
     </Canvas>
 </local:BaseSprite>

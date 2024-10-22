@@ -6,24 +6,32 @@ using Windows.UI.Xaml.Controls;
 namespace Galaga.Model
 {
     /// <summary>
-    /// Manages the Galaga game play.
+    ///     Manages the Galaga game play.
     /// </summary>
     public class GameManager
     {
         #region Data members
 
+        private const int PlayerMaxBullets = 1;
         private const double PlayerOffsetFromBottom = 30;
         private readonly Canvas canvas;
         private readonly double canvasHeight;
         private readonly double canvasWidth;
 
         private Player player;
-        private EnemyManager enemyManager;
-        private Ticker ticker;
-        private IList<Bullet> playerBullets;
-        private TextBlock scoreTextBlock;
-        private TextBlock gameOverBlock;
+        private readonly EnemyManager enemyManager;
+        private readonly Ticker ticker;
+        private readonly IList<Bullet> playerBullets;
+        private readonly TextBlock scoreTextBlock;
+        private readonly TextBlock gameOverBlock;
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Players Score in the game.
+        /// </summary>
         public int Score { get; private set; }
 
         #endregion
@@ -31,7 +39,7 @@ namespace Galaga.Model
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameManager"/> class.
+        ///     Initializes a new instance of the <see cref="GameManager" /> class.
         /// </summary>
         public GameManager(Canvas canvas, TextBlock scoreTextBlock, TextBlock gameOverBlock)
         {
@@ -80,7 +88,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the player left.
+        ///     Moves the player left.
         /// </summary>
         public void MovePlayerLeft()
         {
@@ -91,7 +99,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the player right.
+        ///     Moves the player right.
         /// </summary>
         public void MovePlayerRight()
         {
@@ -101,18 +109,28 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        ///     Provides the ticker for the game.
+        /// </summary>
+        /// <returns>
+        ///     The ticker being used.
+        /// </returns>
         public Ticker GetTicker()
         {
             return this.ticker;
         }
 
+        /// <summary>
+        ///     Handles the player shooting.
+        /// </summary>
         public void PlayerShoot()
         {
-            if (this.playerBullets.Count >= 1)
+            if (this.playerBullets.Count >= PlayerMaxBullets)
             {
                 return;
             }
-            Bullet bullet = this.player.Shoot();
+
+            var bullet = this.player.Shoot();
             if (bullet != null)
             {
                 this.playerBullets.Add(bullet);
@@ -120,6 +138,15 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        ///     Handles the game timer.
+        /// </summary>
+        /// <param name="sender">
+        ///     the sender of the event.
+        /// </param>
+        /// <param name="e">
+        ///     the event arguments.
+        /// </param>
         public void timer_Tick(object sender, object e)
         {
             if (this.enemyManager.totalEnemies == 0)
@@ -129,7 +156,7 @@ namespace Galaga.Model
 
             if (this.playerBullets.Count > 0)
             {
-                Bullet bullet = this.playerBullets[0];
+                var bullet = this.playerBullets[0];
                 bullet.MoveUp();
 
                 if (this.enemyManager.CheckBulletCollision(bullet))
@@ -145,19 +172,17 @@ namespace Galaga.Model
                 }
             }
 
-            List<Bullet> bulletsToRemove = new List<Bullet>();
+            var bulletsToRemove = new List<Bullet>();
 
             foreach (var enemyBullet in this.enemyManager.enemyBullets)
             {
-                if (this.IsCollision(enemyBullet, this.player))
+                if (this.IsCollision(enemyBullet))
                 {
-                    Debug.WriteLine("HIT!!!");
                     bulletsToRemove.Add(enemyBullet);
                     this.canvas.Children.Remove(this.player.Sprite);
                     this.ticker.Stop();
                     this.displayGameLose();
                 }
-                Debug.WriteLine("MISS!!!");
 
                 if (enemyBullet.Y > this.canvasHeight)
                 {
@@ -171,44 +196,53 @@ namespace Galaga.Model
                 this.enemyManager.enemyBullets.Remove(bullet);
                 this.canvas.Children.Remove(bullet.Sprite);
             }
-
-
         }
 
-        private bool IsCollision(Bullet bullet, Player player)
+        private bool IsCollision(Bullet bullet)
         {
             Debug.WriteLine("Checking collision...");
-            Rect bulletBox = bullet.GetBoundingBox();
-            Rect playerBox = player.GetBoundingBox();
-
-            Debug.WriteLine($"Bullet Box: {bulletBox}");
-            Debug.WriteLine($"Payer Box: {playerBox}");
+            var bulletBox = bullet.GetBoundingBox();
+            var playerBox = this.player.GetBoundingBox();
 
             return bulletBox.IntersectsWith(playerBox);
         }
 
+        /// <summary>
+        ///     Adds points to the player's score.
+        /// </summary>
+        /// <param name="points">
+        ///     Amount of points to add.
+        /// </param>
         public void AddScore(int points)
         {
             this.Score += points;
-            this.updateScoreUI(this.scoreTextBlock);
+            this.updateScoreUI();
         }
 
-        public void updateScoreUI(TextBlock scoreTextBlock)
+        /// <summary>
+        ///     Updates the score UI
+        /// </summary>
+        public void updateScoreUI()
         {
-            scoreTextBlock.Text = "Score: " + this.Score.ToString();
+            this.scoreTextBlock.Text = "Score: " + this.Score;
         }
 
+        /// <summary>
+        ///     Displays the game over screen when player loses.
+        /// </summary>
         public void displayGameLose()
         {
-            this.gameOverBlock.Text = "Game Over! \n  You Lose" ;
+            this.gameOverBlock.Text = "Game Over! \n  You Lose";
         }
 
+        /// <summary>
+        ///     Displays the game win screen when player wins.
+        /// </summary>
         public void displayGameWin()
         {
             this.gameOverBlock.Text = "Game Over! \n  You Win";
         }
 
         #endregion
-
     }
 }

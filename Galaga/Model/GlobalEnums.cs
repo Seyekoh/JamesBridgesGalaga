@@ -1,20 +1,33 @@
-
-
 namespace Galaga.Model
 {
     /// <summary>
-    /// Class contains enums to be used throughout the game.
+    ///     Class contains enums to be used throughout the game.
     /// </summary>
     public class GlobalEnums
     {
+        #region Types and Delegates
+
         /// <summary>
-        /// Enum for the enemy sprite types.
+        ///     Enum for the enemy sprite types.
         /// </summary>
         public enum EnemySpriteType
         {
+            /// <summary>
+            ///     Represents Type 1 enemy sprite.
+            /// </summary>
             TYPE1,
+
+            /// <summary>
+            ///     Represents Type 2 enemy sprite.
+            /// </summary>
             TYPE2,
+
+            /// <summary>
+            ///     Represents Type 3 enemy sprite.
+            /// </summary>
             TYPE3
         }
+
+        #endregion
     }
 }

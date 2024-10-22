@@ -3,7 +3,7 @@
 namespace Galaga.Model
 {
     /// <summary>
-    /// Represents a player in the game.
+    ///     Represents a player in the game.
     /// </summary>
     public class Player : GameObject
     {
@@ -17,7 +17,7 @@ namespace Galaga.Model
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Player"/> class.
+        ///     Initializes a new instance of the <see cref="Player" /> class.
         /// </summary>
         public Player()
         {
@@ -25,18 +25,34 @@ namespace Galaga.Model
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Allows the player to shoot a bullet.
+        /// </summary>
+        /// <returns>
+        ///     The bullet being shot.
+        /// </returns>
         public Bullet Shoot()
         {
-            Bullet bullet = new Bullet();
-            bullet.X = this.X + (this.Width / 2.0) - (bullet.Width / 2);
-            bullet.Y = this.Y;
+            var bullet = new Bullet();
+            bullet.X = X + Width / 2.0 - bullet.Width / 2;
+            bullet.Y = Y;
 
             return bullet;
         }
 
+        /// <summary>
+        ///     Gets the bounding box of the player.
+        /// </summary>
+        /// <returns>
+        ///     Rect of the bounding box of the player.
+        /// </returns>
         public Rect GetBoundingBox()
         {
-            return new Rect(this.X, this.Y, this.Width, this.Height);
+            return new Rect(X, Y, Width, Height);
         }
 
         #endregion

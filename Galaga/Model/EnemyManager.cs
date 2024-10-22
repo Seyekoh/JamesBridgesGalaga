@@ -6,26 +6,37 @@ using Windows.UI.Xaml.Controls;
 namespace Galaga.Model
 {
     /// <summary>
-    /// Manages the enemies in the game.
+    ///     Manages the enemies in the game.
     /// </summary>
     public class EnemyManager
     {
         #region Data members
 
         private const double EnemyBuffer = 10;
+
+        /// <summary>
+        ///     List of all active enemy bullets.
+        /// </summary>
+        public IList<Bullet> enemyBullets;
+
         private readonly Canvas canvas;
         private readonly double canvasWidth;
 
-        private GameManager gameManager;
+        private readonly GameManager gameManager;
         private Ticker ticker;
-        private Random random = new Random();
+        private readonly Random random = new Random();
 
-        private IList<Enemy> Type_1_Enemies;
-        private IList<Enemy> Type_2_Enemies;
-        private IList<Enemy> Type_3_Enemies;
+        private readonly IList<Enemy> Type_1_Enemies;
+        private readonly IList<Enemy> Type_2_Enemies;
+        private readonly IList<Enemy> Type_3_Enemies;
 
-        public IList<Bullet> enemyBullets;
+        #endregion
 
+        #region Properties
+
+        /// <summary>
+        ///     Property to get the total number of enemies.
+        /// </summary>
         public int totalEnemies => this.Type_1_Enemies.Count + this.Type_2_Enemies.Count + this.Type_3_Enemies.Count;
 
         #endregion
@@ -33,7 +44,7 @@ namespace Galaga.Model
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnemyManager"/> class.
+        ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
         /// </summary>
         /// <param name="gameManager">
         ///     The game manager being used.
@@ -85,34 +96,35 @@ namespace Galaga.Model
             switch (type)
             {
                 case GlobalEnums.EnemySpriteType.TYPE1:
-                    for (int i = 0; i < numEnemies; i++)
+                    for (var i = 0; i < numEnemies; i++)
                     {
                         var enemy = new Enemy(type);
                         this.Type_1_Enemies.Add(enemy);
                         this.canvas.Children.Add(enemy.Sprite);
                     }
+
                     break;
 
                 case GlobalEnums.EnemySpriteType.TYPE2:
-                    for (int i = 0; i < numEnemies; i++)
+                    for (var i = 0; i < numEnemies; i++)
                     {
                         var enemy = new Enemy(type);
                         this.Type_2_Enemies.Add(enemy);
                         this.canvas.Children.Add(enemy.Sprite);
                     }
+
                     break;
 
                 case GlobalEnums.EnemySpriteType.TYPE3:
-                    for (int i = 0; i < numEnemies; i++)
+                    for (var i = 0; i < numEnemies; i++)
                     {
                         var enemy = new Enemy(type);
                         this.Type_3_Enemies.Add(enemy);
                         this.canvas.Children.Add(enemy.Sprite);
                     }
+
                     break;
             }
-
-            
         }
 
         private void placeEnemies()
@@ -133,13 +145,13 @@ namespace Galaga.Model
                 return;
             }
 
-            double totalRowWidth = enemies.Count * enemies[0].Width + (enemies.Count - 1) * EnemyBuffer;
+            var totalRowWidth = enemies.Count * enemies[0].Width + (enemies.Count - 1) * EnemyBuffer;
 
-            double startX = (this.canvasWidth / 2) - (totalRowWidth / 2);
+            var startX = this.canvasWidth / 2 - totalRowWidth / 2;
 
-            for (int i = 0; i < enemies.Count; i++)
+            for (var i = 0; i < enemies.Count; i++)
             {
-                double xPosition = startX + i * (enemies[i].Width + EnemyBuffer);
+                var xPosition = startX + i * (enemies[i].Width + EnemyBuffer);
                 enemies[i].X = xPosition;
                 enemies[i].Y = yPosition;
 
@@ -155,8 +167,6 @@ namespace Galaga.Model
 
             foreach (var bullet in this.enemyBullets)
             {
-                var y = Canvas.GetTop(bullet.Sprite);
-
                 bullet.MoveDown();
             }
 
@@ -164,7 +174,7 @@ namespace Galaga.Model
             {
                 if (this.random.Next(0, 10) >= 9)
                 {
-                    Bullet bullet = enemy.Shoot();
+                    var bullet = enemy.Shoot();
                     if (bullet != null)
                     {
                         this.enemyBullets.Add(bullet);
@@ -174,7 +184,6 @@ namespace Galaga.Model
             }
 
             await Task.Delay(this.random.Next(3000, 5000));
-            
         }
 
         private void updateEnemyMovement(IList<Enemy> enemies)
@@ -204,6 +213,15 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        ///     Checks if a bullet has collided with an enemy.
+        /// </summary>
+        /// <param name="bullet">
+        ///     The player's bullet.
+        /// </param>
+        /// <returns>
+        ///     True if the bullet has collided with an enemy, false otherwise.
+        /// </returns>
         public bool CheckBulletCollision(Bullet bullet)
         {
             foreach (var enemy in this.Type_1_Enemies)
@@ -238,8 +256,8 @@ namespace Galaga.Model
 
         private bool IsCollision(Bullet bullet, Enemy enemy)
         {
-            Rect bulletBox = bullet.GetBoundingBox();
-            Rect enemyBox = enemy.GetBoundingBox();
+            var bulletBox = bullet.GetBoundingBox();
+            var enemyBox = enemy.GetBoundingBox();
 
             return bulletBox.IntersectsWith(enemyBox);
         }
@@ -248,7 +266,7 @@ namespace Galaga.Model
         {
             this.canvas.Children.Remove(enemy.Sprite);
 
-            int points = 0;
+            var points = 0;
             var type = enemy.type;
             switch (type)
             {
