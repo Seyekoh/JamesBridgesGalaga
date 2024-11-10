@@ -8,7 +8,7 @@ namespace Galaga.View.Sprites
     /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
-    public sealed partial class EnemySprite_type1
+    public partial class EnemySprite_type1
     {
         #region Constructors
 

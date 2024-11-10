@@ -200,7 +200,6 @@ namespace Galaga.Model
 
         private bool IsCollision(Bullet bullet)
         {
-            Debug.WriteLine("Checking collision...");
             var bulletBox = bullet.GetBoundingBox();
             var playerBox = this.player.GetBoundingBox();
 

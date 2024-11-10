@@ -163,6 +163,17 @@ namespace Galaga.Model
             this.SpeedY = speedY;
         }
 
+        /// <summary>
+        ///     Creates a Rect object that represents the bounding box of the object.
+        /// </summary>
+        /// <returns>
+        ///     Rect of the bounding box.
+        /// </returns>
+        public Rect GetBoundingBox()
+        {
+            return new Rect(this.X, this.Y, this.Width, this.Height);
+        }
+
         #endregion
     }
 }

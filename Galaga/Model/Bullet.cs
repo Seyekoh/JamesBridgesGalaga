@@ -27,19 +27,5 @@ namespace Galaga.Model
 
         #endregion
 
-        #region Methods
-
-        /// <summary>
-        ///     Creates a Rect object that represents the bounding box of the bullet.
-        /// </summary>
-        /// <returns>
-        ///     Rect of the bounding box of the bullet.
-        /// </returns>
-        public Rect GetBoundingBox()
-        {
-            return new Rect(X, Y, Width, Height);
-        }
-
-        #endregion
     }
 }

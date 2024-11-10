@@ -6,10 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="60"
+    d:DesignHeight="52"
     d:DesignWidth="50"
     Height="60"
-    Width="50">
+    Width="52">
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="ShipBaseColor" Color="Purple" />

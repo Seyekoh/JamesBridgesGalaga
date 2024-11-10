@@ -6,10 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="60"
-    d:DesignWidth="50"
-    Height="60"
-    Width="50">
+    d:DesignHeight="51"
+    d:DesignWidth="38"
+    Height="51"
+    Width="38">
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="ShipBaseColor" Color="DarkSlateGray" />
@@ -24,33 +24,33 @@
         </Canvas.RenderTransform>
 
         <Line X1="25" Y1="0" X2="25" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
         <Line X1="25" Y1="10" X2="25" Y2="18" Stroke="{StaticResource CockpitColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
 
         <Line X1="20" Y1="5" X2="20" Y2="50" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
         <Line X1="20" Y1="45" X2="20" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
 
         <Line X1="30" Y1="5" X2="30" Y2="50" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
         <Line X1="30" Y1="45" X2="30" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
 
         <Line X1="30" Y1="25" X2="40" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
         <Line X1="30" Y1="35" X2="40" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
         <Line X1="40" Y1="25" X2="40" Y2="48" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
 
         <Line X1="20" Y1="25" X2="10" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
         <Line X1="20" Y1="35" X2="10" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
         <Line X1="10" Y1="25" X2="10" Y2="48" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
 
     </Canvas>
 </local:BaseSprite>

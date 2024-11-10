@@ -44,17 +44,6 @@ namespace Galaga.Model
             return bullet;
         }
 
-        /// <summary>
-        ///     Gets the bounding box of the player.
-        /// </summary>
-        /// <returns>
-        ///     Rect of the bounding box of the player.
-        /// </returns>
-        public Rect GetBoundingBox()
-        {
-            return new Rect(X, Y, Width, Height);
-        }
-
         #endregion
     }
 }

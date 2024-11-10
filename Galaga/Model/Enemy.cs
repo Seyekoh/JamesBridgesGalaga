@@ -32,6 +32,8 @@ namespace Galaga.Model
         /// </summary>
         public bool MovingRight { get; set; } = true;
 
+        public int Score { get; private set; }
+
         #endregion
 
         #region Constructors
@@ -45,6 +47,7 @@ namespace Galaga.Model
             Sprite = new EnemySprite_type1();
             this.type = GlobalEnums.EnemySpriteType.TYPE1;
             SetSpeed(SpeedXDirection, SpeedYDirection);
+            this.Score = 10;
         }
 
         /// <summary>
@@ -61,16 +64,19 @@ namespace Galaga.Model
             {
                 Sprite = new EnemySprite_type1();
                 this.type = GlobalEnums.EnemySpriteType.TYPE1;
+                this.Score = 10;
             }
             else if (enemyType.Equals(GlobalEnums.EnemySpriteType.TYPE2))
             {
                 Sprite = new EnemySprite_type2();
                 this.type = GlobalEnums.EnemySpriteType.TYPE2;
+                this.Score = 20;
             }
             else if (enemyType.Equals(GlobalEnums.EnemySpriteType.TYPE3))
             {
                 Sprite = new EnemySprite_type3();
                 this.type = GlobalEnums.EnemySpriteType.TYPE3;
+                this.Score = 30;
             }
             else
             {
@@ -96,17 +102,6 @@ namespace Galaga.Model
             bullet.X = X + Width / 2 - bullet.Width / 2;
             bullet.Y = Y + Height;
             return bullet;
-        }
-
-        /// <summary>
-        ///     Creates a Rect object that represents the bounding box of the enemy ship.
-        /// </summary>
-        /// <returns>
-        ///     Rect of the bounding box of the enemy ship.
-        /// </returns>
-        public Rect GetBoundingBox()
-        {
-            return new Rect(X, Y, Width, Height);
         }
 
         #endregion

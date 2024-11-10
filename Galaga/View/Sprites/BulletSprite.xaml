@@ -6,18 +6,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="60"
-    d:DesignWidth="50"
-    Height="60"
-    Width="50">
+    d:DesignHeight="12"
+    d:DesignWidth="6"
+    Height="12"
+    Width="6">
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="BulletBaseColor" Color="Firebrick" />
     </UserControl.Resources>
 
-    <Canvas>
+    <Canvas Margin="0,0,44,52">
         <Line X1="25" Y1="25" X2="25" Y2="35" Stroke="{StaticResource BulletBaseColor}" StrokeThickness="3"
-              HorizontalAlignment="Center" VerticalAlignment="Center" />
+              HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="-22" Canvas.Top="-24" />
     </Canvas>
 
 </local:BaseSprite>
