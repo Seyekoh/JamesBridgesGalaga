@@ -32,6 +32,9 @@ namespace Galaga.Model
         /// </summary>
         public bool MovingRight { get; set; } = true;
 
+        /// <summary>
+        ///     Score given to player when ship is destroyed
+        /// </summary>
         public int Score { get; private set; }
 
         #endregion
@@ -77,6 +80,12 @@ namespace Galaga.Model
                 Sprite = new EnemySprite_type3();
                 this.type = GlobalEnums.EnemySpriteType.TYPE3;
                 this.Score = 30;
+            }
+            else if (enemyType.Equals(GlobalEnums.EnemySpriteType.TYPE4))
+            {
+                Sprite = new EnemySprite_type4();
+                this.type = GlobalEnums.EnemySpriteType.TYPE4;
+                this.Score = 40;
             }
             else
             {

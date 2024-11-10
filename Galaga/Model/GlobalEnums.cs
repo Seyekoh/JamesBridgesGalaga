@@ -25,7 +25,12 @@ namespace Galaga.Model
             /// <summary>
             ///     Represents Type 3 enemy sprite.
             /// </summary>
-            TYPE3
+            TYPE3,
+
+            /// <summary>
+            ///    Represents Type 4 enemy sprite.
+            /// </summary>
+            TYPE4
         }
 
         #endregion

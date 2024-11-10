@@ -13,6 +13,11 @@ namespace Galaga.Model
     {
         #region Data members
 
+        private const int EnemyType1Max = 3;
+        private const int EnemyType2Max = 4;
+        private const int EnemyType3Max = 4;
+        private const int EnemyType4Max = 5;
+
         private const double EnemyToCanvasBuffer = 5;
         private const double EnemyToEnemyBuffer = 10;
 
@@ -26,7 +31,7 @@ namespace Galaga.Model
         private Ticker ticker;
         private readonly Random random = new Random();
 
-        private IList<Enemy> Enemies;
+        private readonly IList<Enemy> Enemies;
 
         #endregion
 
@@ -85,9 +90,10 @@ namespace Galaga.Model
 
         private void createAndPlaceEnemies()
         {
-            this.createEnemies(2, GlobalEnums.EnemySpriteType.TYPE1);
-            this.createEnemies(3, GlobalEnums.EnemySpriteType.TYPE2);
-            this.createEnemies(4, GlobalEnums.EnemySpriteType.TYPE3);
+            this.createEnemies(EnemyType1Max, GlobalEnums.EnemySpriteType.TYPE1);
+            this.createEnemies(EnemyType2Max, GlobalEnums.EnemySpriteType.TYPE2);
+            this.createEnemies(EnemyType3Max, GlobalEnums.EnemySpriteType.TYPE3);
+            this.createEnemies(EnemyType4Max, GlobalEnums.EnemySpriteType.TYPE4);
 
             this.placeEnemies();
         }
@@ -105,13 +111,15 @@ namespace Galaga.Model
 
         private void placeEnemies()
         {
-            double[] rowHeights = { 50, 100, 150 };
+            double[] rowHeights = { 50, 100, 150, 200 };
 
-            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE1, rowHeights[2]);
+            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE1, rowHeights[3]);
 
-            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE2, rowHeights[1]);
+            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE2, rowHeights[2]);
 
-            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE3, rowHeights[0]);
+            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE3, rowHeights[1]);
+
+            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE4, rowHeights[0]);
         }
 
         private void placeRowEnemies(IList<Enemy> enemies, GlobalEnums.EnemySpriteType type, double yPosition)
@@ -147,9 +155,12 @@ namespace Galaga.Model
 
         private void letEnemyShoot()
         {
-            var type3Enemies = this.Enemies.Where(enemy => enemy.type == GlobalEnums.EnemySpriteType.TYPE3).ToList();
+            var shootingEnemies = this.Enemies
+                .Where(enemy => enemy.type == GlobalEnums.EnemySpriteType.TYPE3 ||
+                                enemy.type == GlobalEnums.EnemySpriteType.TYPE4)
+                .ToList();
 
-            foreach (var enemy in type3Enemies)
+            foreach (var enemy in shootingEnemies)
             {
                 if (this.random.Next(0, 10) >= 9) // 10% chance to shoot
                 {
