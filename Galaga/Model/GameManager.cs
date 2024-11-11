@@ -61,8 +61,8 @@ namespace Galaga.Model
 
         #region Data members
 
-        private const int PlayerShotDelay = 500;
         private const double PlayerOffsetFromBottom = 30;
+        private const int PlayerShotDelay = 500;
         private const int MaxPlayerLives = 3;
 
         private readonly Canvas canvas;
@@ -70,6 +70,7 @@ namespace Galaga.Model
         private readonly double canvasWidth;
 
         private Player player;
+
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly Ticker ticker;
@@ -143,7 +144,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Moves the player left.
         /// </summary>
-        public void MovePlayerLeft()
+        public void movePlayerLeft()
         {
             if (this.player.X > this.player.SpeedX)
             {
@@ -154,7 +155,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Moves the player right.
         /// </summary>
-        public void MovePlayerRight()
+        public void movePlayerRight()
         {
             if (this.player.X < this.canvasWidth - this.player.Width - this.player.SpeedX)
             {
@@ -165,7 +166,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Handles the player shooting.
         /// </summary>
-        public async void PlayerShoot()
+        public async void playerShoot()
         {
             if (!this.player.CanShoot)
             {
@@ -220,7 +221,7 @@ namespace Galaga.Model
             
             foreach (var bullet in bulletsToRemove)
             {
-                this.bulletManager.RemovePlayerBullet(bullet);
+                this.bulletManager.RemovePlayerBulletAfterImpact(bullet);
             }
         }
 
@@ -239,7 +240,7 @@ namespace Galaga.Model
                 }
             }
 
-            this.bulletManager.RemoveEnemyBullet(bulletToRemove);
+            this.bulletManager.RemoveEnemyBulletAfterImpact(bulletToRemove);
         }
 
         private void updatePlayerLives()

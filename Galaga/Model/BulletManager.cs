@@ -18,6 +18,11 @@ namespace Galaga.Model
         public delegate void AddSpriteHandler(UIElement sprite);
 
         /// <summary>
+        ///     Event for adding a sprite to the game.
+        /// </summary>
+        public event AddSpriteHandler OnSpriteAdded;
+
+        /// <summary>
         ///     Delegate for removing a sprite from the game.
         /// </summary>
         /// <param name="sprite">
@@ -26,16 +31,12 @@ namespace Galaga.Model
         public delegate void RemoveSpriteHandler(UIElement sprite);
 
         /// <summary>
-        ///     Event for adding a sprite to the game.
-        /// </summary>
-        public event AddSpriteHandler OnSpriteAdded;
-
-        /// <summary>
         ///     Event for removing a sprite from the game.
         /// </summary>
         public event RemoveSpriteHandler OnSpriteRemoved;
 
         #endregion
+
         #region Data Members
 
         private const int MaxPlayerBullets = 3;
@@ -151,7 +152,7 @@ namespace Galaga.Model
         /// <param name="bullet">
         ///     The bullet to remove.
         /// </param>
-        public void RemovePlayerBullet(Bullet bullet)
+        public void RemovePlayerBulletAfterImpact(Bullet bullet)
         {
             this.PlayerBullets.Remove(bullet);
             this.OnSpriteRemoved?.Invoke(bullet.Sprite);
@@ -175,7 +176,7 @@ namespace Galaga.Model
         /// <param name="bullet">
         ///     The bullet to remove.
         /// </param>
-        public void RemoveEnemyBullet(Bullet bullet)
+        public void RemoveEnemyBulletAfterImpact(Bullet bullet)
         {
             var bulletToRemove = new List<Bullet>();
             bulletToRemove.Add(bullet);

@@ -28,12 +28,18 @@ namespace Galaga.Model
         public event UpdateScoreHandler OnScoreUpdated;
 
         #endregion
+
         #region Data members
 
         private const int EnemyType1Max = 3;
         private const int EnemyType2Max = 4;
         private const int EnemyType3Max = 4;
         private const int EnemyType4Max = 5;
+
+        private const double Level1RowHeight = 200;
+        private const double Level2RowHeight = 150;
+        private const double Level3RowHeight = 100;
+        private const double Level4RowHeight = 50;
 
         private const double EnemyToCanvasBuffer = 5;
         private const double EnemyToEnemyBuffer = 10;
@@ -122,20 +128,18 @@ namespace Galaga.Model
 
         private void placeEnemies()
         {
-            double[] rowHeights = { 50, 100, 150, 200 };
+            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE1, Level1RowHeight);
 
-            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE1, rowHeights[3]);
+            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE2, Level2RowHeight);
 
-            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE2, rowHeights[2]);
+            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE3, Level3RowHeight);
 
-            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE3, rowHeights[1]);
-
-            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE4, rowHeights[0]);
+            this.placeRowEnemies(this.Enemies, GlobalEnums.EnemySpriteType.TYPE4, Level4RowHeight);
         }
 
         private void placeRowEnemies(IList<Enemy> enemies, GlobalEnums.EnemySpriteType type, double yPosition)
         {
-            var rowEnemies = enemies.Where(e => e.type == type).ToList();
+            var rowEnemies = enemies.Where(enemy => enemy.type == type).ToList();
             if (rowEnemies.Count == 0)
             {
                 return;
@@ -197,14 +201,17 @@ namespace Galaga.Model
 
             foreach (var enemy in shootingEnemies)
             {
-                if (this.random.Next(0, 10) >= 9) // 10% chance to shoot
+                if (this.random.Next(0, 10) < 9) // 10% chance to shoot
                 {
-                    var bullet = enemy.Shoot();
-                    if (bullet != null)
-                    {
-                        this.bulletManager.AddEnemyBullet(bullet);
-                    }
+                    return;
                 }
+
+                var bullet = enemy.Shoot();
+                if (bullet != null)
+                {
+                    this.bulletManager.AddEnemyBullet(bullet);
+                }
+                
             }
         }
 

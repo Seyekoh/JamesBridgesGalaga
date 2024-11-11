@@ -5,7 +5,7 @@ namespace Galaga.Model
     /// </summary>
     public class GlobalEnums
     {
-        #region Types and Delegates
+        #region Enums
 
         /// <summary>
         ///     Enum for the enemy sprite types.

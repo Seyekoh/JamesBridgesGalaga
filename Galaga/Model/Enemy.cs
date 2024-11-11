@@ -10,6 +10,11 @@ namespace Galaga.Model
     {
         #region Data members
 
+        private const int Level1Score = 10;
+        private const int Level2Score = 20;
+        private const int Level3Score = 30;
+        private const int Level4Score = 40;
+
         private const int SpeedXDirection = 3;
         private const int SpeedYDirection = 0;
 
@@ -50,7 +55,7 @@ namespace Galaga.Model
             Sprite = new EnemySprite_type1();
             this.type = GlobalEnums.EnemySpriteType.TYPE1;
             SetSpeed(SpeedXDirection, SpeedYDirection);
-            this.Score = 10;
+            this.Score = Level1Score;
         }
 
         /// <summary>
@@ -67,25 +72,25 @@ namespace Galaga.Model
             {
                 Sprite = new EnemySprite_type1();
                 this.type = GlobalEnums.EnemySpriteType.TYPE1;
-                this.Score = 10;
+                this.Score = Level1Score;
             }
             else if (enemyType.Equals(GlobalEnums.EnemySpriteType.TYPE2))
             {
                 Sprite = new EnemySprite_type2();
                 this.type = GlobalEnums.EnemySpriteType.TYPE2;
-                this.Score = 20;
+                this.Score = Level2Score;
             }
             else if (enemyType.Equals(GlobalEnums.EnemySpriteType.TYPE3))
             {
                 Sprite = new EnemySprite_type3();
                 this.type = GlobalEnums.EnemySpriteType.TYPE3;
-                this.Score = 30;
+                this.Score = Level3Score;
             }
             else if (enemyType.Equals(GlobalEnums.EnemySpriteType.TYPE4))
             {
                 Sprite = new EnemySprite_type4();
                 this.type = GlobalEnums.EnemySpriteType.TYPE4;
-                this.Score = 40;
+                this.Score = Level4Score;
             }
             else
             {

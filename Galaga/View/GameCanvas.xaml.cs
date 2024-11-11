@@ -80,12 +80,12 @@ namespace Galaga.View
         {
             if (this.isMovingLeft)
             {
-                this.gameManager.MovePlayerLeft();
+                this.gameManager.movePlayerLeft();
             }
 
             if (this.isMovingRight)
             {
-                this.gameManager.MovePlayerRight();
+                this.gameManager.movePlayerRight();
             }
         }
 
@@ -100,7 +100,7 @@ namespace Galaga.View
                     this.isMovingRight = true;
                     break;
                 case VirtualKey.Space:
-                    this.gameManager.PlayerShoot();
+                    this.gameManager.playerShoot();
                     break;
             }
         }
