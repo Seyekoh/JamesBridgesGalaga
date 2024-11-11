@@ -14,6 +14,16 @@ namespace Galaga.Model
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        ///     Property to determine if the player can shoot.
+        /// </summary>
+        public bool CanShoot { get; set; } = true;
+    
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -37,6 +47,11 @@ namespace Galaga.Model
         /// </returns>
         public Bullet Shoot()
         {
+            if (!this.CanShoot)
+            {
+                return null;
+            }
+
             var bullet = new Bullet();
             bullet.X = X + Width / 2.0 - bullet.Width / 2;
             bullet.Y = Y;

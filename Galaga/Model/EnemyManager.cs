@@ -29,6 +29,7 @@ namespace Galaga.Model
         private readonly double canvasWidth;
 
         private readonly GameManager gameManager;
+        private BulletManager bulletManager;
         private Ticker ticker;
         private readonly Random random = new Random();
 
@@ -43,11 +44,6 @@ namespace Galaga.Model
         /// </summary>
         public int totalEnemies => this.Enemies.Count;
 
-        /// <summary>
-        ///     Property to keep track of enemy bullets.
-        /// </summary>
-        public IList<Bullet> enemyBullets { get; private set; }
-
         #endregion
 
         #region Constructors
@@ -61,8 +57,11 @@ namespace Galaga.Model
         /// <param name="canvas">
         ///     The canvas to draw the enemies on.
         /// </param>
+        /// <param name="bulletManager">
+        ///     The bullet manager being used.
+        /// </param>
         /// <exception cref="ArgumentNullException"></exception>
-        public EnemyManager(GameManager gameManager, Canvas canvas)
+        public EnemyManager(GameManager gameManager, Canvas canvas, BulletManager bulletManager)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
 
@@ -70,8 +69,7 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.gameManager = gameManager;
-
-            this.enemyBullets = new List<Bullet>();
+            this.bulletManager = bulletManager;
 
             this.Enemies = new List<Enemy>();
 
@@ -149,9 +147,9 @@ namespace Galaga.Model
             this.animateEnemy();
             this.updateEnemyMovement(this.Enemies);
 
-            this.moveEnemyBullets();
-
+            this.bulletManager.UpdateBullets();
             this.letEnemyShoot();
+
             await Task.Delay(this.random.Next(EnemyFireDelayMin, EnemyFireDelayMax));
         }
 
@@ -192,18 +190,9 @@ namespace Galaga.Model
                     var bullet = enemy.Shoot();
                     if (bullet != null)
                     {
-                        this.enemyBullets.Add(bullet);
-                        this.canvas.Children.Add(bullet.Sprite);
+                        this.bulletManager.AddEnemyBullet(bullet);
                     }
                 }
-            }
-        }
-
-        private void moveEnemyBullets()
-        {
-            foreach (var bullet in this.enemyBullets)
-            {
-                bullet.MoveDown();
             }
         }
 
@@ -237,32 +226,31 @@ namespace Galaga.Model
         /// <summary>
         ///     Checks if a player's bullet has collided with an enemy.
         /// </summary>
-        /// <param name="bullet">
+        /// <param name="playerBullet">
         ///     The player's bullet.
         /// </param>
         /// <returns>
         ///     True if the bullet has collided with an enemy, false otherwise.
         /// </returns>
-        public bool CheckBulletCollision(Bullet bullet)
+        public bool CheckIfPlayerShotEnemy(Bullet playerBullet)
         {
+            var enemiesToRemove = new List<Enemy>();
+
             foreach (var enemy in this.Enemies)
             {
-                if (this.IsCollision(bullet, enemy))
+                if (this.bulletManager.IsCollisionWithEnemy(playerBullet, enemy))
                 {
-                    this.RemoveEnemy(enemy);
-                    return true;
+                    enemiesToRemove.Add(enemy);
                 }
             }
 
+            foreach (var enemy in enemiesToRemove)
+            {
+                this.RemoveEnemy(enemy);
+                return true;
+            }
+
             return false;
-        }
-
-        private bool IsCollision(Bullet bullet, Enemy enemy)
-        {
-            var bulletBox = bullet.GetBoundingBox();
-            var enemyBox = enemy.GetBoundingBox();
-
-            return bulletBox.IntersectsWith(enemyBox);
         }
 
         private void RemoveEnemy(Enemy enemy)

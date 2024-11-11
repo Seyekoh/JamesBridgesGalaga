@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -12,7 +12,7 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private const int PlayerMaxBullets = 1;
+        private const int PlayerShotDelay = 500;
         private const double PlayerOffsetFromBottom = 30;
         private readonly Canvas canvas;
         private readonly double canvasHeight;
@@ -20,8 +20,8 @@ namespace Galaga.Model
 
         private Player player;
         private readonly EnemyManager enemyManager;
+        private readonly BulletManager bulletManager;
         private readonly Ticker ticker;
-        private readonly IList<Bullet> playerBullets;
         private readonly TextBlock scoreTextBlock;
         private readonly TextBlock gameOverBlock;
 
@@ -56,9 +56,9 @@ namespace Galaga.Model
             this.ticker.Tick += this.timer_Tick;
             this.ticker.Start();
 
-            this.enemyManager = new EnemyManager(this, canvas);
+            this.bulletManager = new BulletManager(canvas);
+            this.enemyManager = new EnemyManager(this, canvas, this.bulletManager);
 
-            this.playerBullets = new List<Bullet>();
             this.Score = 0;
 
             this.initializeGame();
@@ -123,9 +123,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Handles the player shooting.
         /// </summary>
-        public void PlayerShoot()
+        public async void PlayerShoot()
         {
-            if (this.playerBullets.Count >= PlayerMaxBullets)
+            if (!this.player.CanShoot)
             {
                 return;
             }
@@ -133,9 +133,14 @@ namespace Galaga.Model
             var bullet = this.player.Shoot();
             if (bullet != null)
             {
-                this.playerBullets.Add(bullet);
-                this.canvas.Children.Add(bullet.Sprite);
+                this.bulletManager.AddPlayerBullet(bullet);
             }
+
+            this.player.CanShoot = false;
+
+            await Task.Delay(PlayerShotDelay);
+
+            this.player.CanShoot = true;
         }
 
         /// <summary>
@@ -154,56 +159,47 @@ namespace Galaga.Model
                 this.displayGameWin();
             }
 
-            if (this.playerBullets.Count > 0)
-            {
-                var bullet = this.playerBullets[0];
-                bullet.MoveUp();
+            this.checkIfPlayerShotEnemy();
+            this.checkIfEnemyShotPlayer();
+        }
 
-                if (this.enemyManager.CheckBulletCollision(bullet))
-                {
-                    this.canvas.Children.Remove(bullet.Sprite);
-                    this.playerBullets.RemoveAt(0);
-                }
-
-                if (bullet.Y < 0)
-                {
-                    this.canvas.Children.Remove(bullet.Sprite);
-                    this.playerBullets.RemoveAt(0);
-                }
-            }
-
+        private void checkIfPlayerShotEnemy()
+        {
+            var bullets = this.bulletManager.PlayerBullets;
             var bulletsToRemove = new List<Bullet>();
 
-            foreach (var enemyBullet in this.enemyManager.enemyBullets)
+            foreach (var bullet in bullets)
             {
-                if (this.IsCollision(enemyBullet))
+                if (this.enemyManager.CheckIfPlayerShotEnemy(bullet))
                 {
-                    bulletsToRemove.Add(enemyBullet);
-                    this.canvas.Children.Remove(this.player.Sprite);
-                    this.ticker.Stop();
-                    this.displayGameLose();
-                }
-
-                if (enemyBullet.Y > this.canvasHeight)
-                {
-                    this.canvas.Children.Remove(enemyBullet.Sprite);
-                    bulletsToRemove.Add(enemyBullet);
+                    bulletsToRemove.Add(bullet);
                 }
             }
-
+            
             foreach (var bullet in bulletsToRemove)
             {
-                this.enemyManager.enemyBullets.Remove(bullet);
-                this.canvas.Children.Remove(bullet.Sprite);
+                this.bulletManager.RemovePlayerBullet(bullet);
             }
         }
 
-        private bool IsCollision(Bullet bullet)
+        private void checkIfEnemyShotPlayer()
         {
-            var bulletBox = bullet.GetBoundingBox();
-            var playerBox = this.player.GetBoundingBox();
+            var bullets = this.bulletManager.EnemyBullets;
 
-            return bulletBox.IntersectsWith(playerBox);
+            foreach (var enemyBullet in bullets)
+            {
+                if (this.bulletManager.IsCollisionWithPlayer(enemyBullet, this.player))
+                {
+                    this.endGame();
+                }
+            }
+        }
+
+        private void endGame()
+        {
+            this.canvas.Children.Remove(this.player.Sprite);
+            this.ticker.Stop();
+            this.displayGameLose();
         }
 
         /// <summary>
