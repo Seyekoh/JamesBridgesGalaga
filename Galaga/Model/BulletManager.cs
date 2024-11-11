@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Windows.UI.Xaml.Controls;
+﻿using System.Collections.Generic;
+using Windows.UI.Xaml;
 
 namespace Galaga.Model
 {
@@ -9,10 +8,39 @@ namespace Galaga.Model
     /// </summary>
     public class BulletManager
     {
+        #region Events
+        /// <summary>
+        ///     Delegate for adding a sprite to the game.
+        /// </summary>
+        /// <param name="sprite">
+        ///     The sprite to add.
+        /// </param>
+        public delegate void AddSpriteHandler(UIElement sprite);
+
+        /// <summary>
+        ///     Delegate for removing a sprite from the game.
+        /// </summary>
+        /// <param name="sprite">
+        ///     The sprite to remove.
+        /// </param>
+        public delegate void RemoveSpriteHandler(UIElement sprite);
+
+        /// <summary>
+        ///     Event for adding a sprite to the game.
+        /// </summary>
+        public event AddSpriteHandler OnSpriteAdded;
+
+        /// <summary>
+        ///     Event for removing a sprite from the game.
+        /// </summary>
+        public event RemoveSpriteHandler OnSpriteRemoved;
+
+        #endregion
         #region Data Members
 
         private const int MaxPlayerBullets = 3;
-        private readonly Canvas canvas;
+
+        private readonly double CanvasHeight;
 
         #endregion
 
@@ -34,15 +62,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Bullet manager constructor.
         /// </summary>
-        /// <param name="canvas">
-        ///     The canvas of the game.
-        /// </param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public BulletManager(Canvas canvas)
+        public BulletManager(double canvasHeight)
         {
-            this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
-
-            this.canvas = canvas;
+            this.CanvasHeight = canvasHeight;
             this.EnemyBullets = new List<Bullet>();
             this.PlayerBullets = new List<Bullet>();
         }
@@ -91,12 +113,12 @@ namespace Galaga.Model
             foreach (var bullet in bulletsToRemove)
             {
                 this.PlayerBullets.Remove(bullet);
-                this.canvas.Children.Remove(bullet.Sprite);
+                this.OnSpriteRemoved?.Invoke(bullet.Sprite);
             }
 
             foreach (var bullet in this.EnemyBullets)
             {
-                if (bullet.Y > this.canvas.Height)
+                if (bullet.Y > this.CanvasHeight)
                 {
                     bulletsToRemove.Add(bullet);
                 }
@@ -104,7 +126,7 @@ namespace Galaga.Model
             foreach (var bullet in bulletsToRemove)
             {
                 this.EnemyBullets.Remove(bullet);
-                this.canvas.Children.Remove(bullet.Sprite);
+                this.OnSpriteRemoved?.Invoke(bullet.Sprite);
             }
         }
 
@@ -119,7 +141,7 @@ namespace Galaga.Model
             if (this.PlayerBullets.Count < MaxPlayerBullets)
             {
                 this.PlayerBullets.Add(bullet);
-                this.canvas.Children.Add(bullet.Sprite);
+                this.OnSpriteAdded?.Invoke(bullet.Sprite);
             }
         }
 
@@ -132,7 +154,7 @@ namespace Galaga.Model
         public void RemovePlayerBullet(Bullet bullet)
         {
             this.PlayerBullets.Remove(bullet);
-            this.canvas.Children.Remove(bullet.Sprite);
+            this.OnSpriteRemoved?.Invoke(bullet.Sprite);
         }
 
         /// <summary>
@@ -144,7 +166,7 @@ namespace Galaga.Model
         public void AddEnemyBullet(Bullet bullet)
         {
             this.EnemyBullets.Add(bullet);
-            this.canvas.Children.Add(bullet.Sprite);
+            this.OnSpriteAdded?.Invoke(bullet.Sprite);
         }
 
         /// <summary>
@@ -161,7 +183,7 @@ namespace Galaga.Model
             foreach (var bulletBeingRemoved in bulletToRemove)
             {
                 this.EnemyBullets.Remove(bulletBeingRemoved);
-                this.canvas.Children.Remove(bulletBeingRemoved.Sprite);
+                this.OnSpriteRemoved?.Invoke(bulletBeingRemoved.Sprite);
             }
         }
 

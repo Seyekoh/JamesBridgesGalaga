@@ -10,6 +10,55 @@ namespace Galaga.Model
     /// </summary>
     public class GameManager
     {
+        #region Events
+
+        /// <summary>
+        ///     Delegate for updating the score.
+        /// </summary>
+        /// <param name="newScore">
+        ///     The new score to update to.
+        /// </param>
+        public delegate void UpdateScoreHandler(int newScore);
+
+        /// <summary>
+        ///     Delegate for updating the player lives.
+        /// </summary>
+        /// <param name="newLives">
+        ///     The new number of lives to update to.
+        /// </param>
+        public delegate void UpdatePlayerLivesHandler(int newLives);
+
+        /// <summary>
+        ///     Delegate for displaying the game over message.
+        /// </summary>
+        /// <param name="typeOfGameOver">
+        ///     The type of game over that occurred.
+        /// </param>
+        public delegate void DisplayGameOverHandler(GlobalEnums.GameOverType typeOfGameOver);
+        //public delegate void AddSpriteHandler(UIElement sprite);
+        //public delegate void RemoveSpriteHandler(UIElement sprite);
+
+        /// <summary>
+        ///     Event for updating the score.
+        /// </summary>
+        public event UpdateScoreHandler OnScoreUpdated;
+
+        /// <summary>
+        ///     Event for updating the player lives.
+        /// </summary>
+        public event UpdatePlayerLivesHandler OnPlayerLivesUpdated;
+
+        /// <summary>
+        ///     Event for displaying the game over message.
+        /// </summary>
+        public event DisplayGameOverHandler OnGameOver;
+        //public event AddSpriteHandler OnSpriteAdded;
+        //public event RemoveSpriteHandler OnSpriteRemoved;
+
+
+
+        #endregion
+
         #region Data members
 
         private const int PlayerShotDelay = 500;
@@ -24,9 +73,6 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly Ticker ticker;
-        private readonly TextBlock scoreTextBlock;
-        private readonly TextBlock gameOverBlock;
-        private readonly TextBlock playerLivesTextBlock;
 
         #endregion
 
@@ -49,7 +95,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameManager" /> class.
         /// </summary>
-        public GameManager(Canvas canvas, TextBlock scoreTextBlock, TextBlock gameOverBlock, TextBlock playerLivesTextBlock)
+        public GameManager(Canvas canvas, BulletManager bulletManager, EnemyManager enemyManager)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
 
@@ -57,16 +103,14 @@ namespace Galaga.Model
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
 
-            this.scoreTextBlock = scoreTextBlock;
-            this.gameOverBlock = gameOverBlock;
-            this.playerLivesTextBlock = playerLivesTextBlock;
-
             this.ticker = new Ticker();
             this.ticker.Tick += this.timer_Tick;
             this.ticker.Start();
 
-            this.bulletManager = new BulletManager(canvas);
-            this.enemyManager = new EnemyManager(this, canvas, this.bulletManager);
+            this.bulletManager = bulletManager;
+            this.enemyManager = enemyManager;
+
+            this.enemyManager.OnScoreUpdated += this.UpdateScore;
 
             this.Score = 0;
 
@@ -119,17 +163,6 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Provides the ticker for the game.
-        /// </summary>
-        /// <returns>
-        ///     The ticker being used.
-        /// </returns>
-        public Ticker GetTicker()
-        {
-            return this.ticker;
-        }
-
-        /// <summary>
         ///     Handles the player shooting.
         /// </summary>
         public async void PlayerShoot()
@@ -165,7 +198,7 @@ namespace Galaga.Model
         {
             if (this.enemyManager.totalEnemies == 0)
             {
-                this.displayGameWin();
+                this.winGame();
             }
 
             this.checkIfPlayerShotEnemy();
@@ -214,20 +247,25 @@ namespace Galaga.Model
             if (this.PlayerLives > 0)
             {
                 this.PlayerLives--;
-                this.playerLivesTextBlock.Text = "Lives: " + this.PlayerLives;
+                this.OnPlayerLivesUpdated?.Invoke(this.PlayerLives);
             }
 
             if (this.PlayerLives == 0)
             {
-                this.endGame();
+                this.loseGame();
             }
         }
 
-        private void endGame()
+        private void loseGame()
         {
-            this.canvas.Children.Remove(this.player.Sprite);
             this.ticker.Stop();
-            this.displayGameLose();
+            this.OnGameOver?.Invoke(GlobalEnums.GameOverType.LOSE);
+        }
+
+        private void winGame()
+        {
+            this.ticker.Stop();
+            this.OnGameOver?.Invoke(GlobalEnums.GameOverType.WIN);
         }
 
         /// <summary>
@@ -239,32 +277,14 @@ namespace Galaga.Model
         public void AddScore(int points)
         {
             this.Score += points;
-            this.updateScoreUI();
+            this.OnScoreUpdated?.Invoke(this.Score);
         }
 
-        /// <summary>
-        ///     Updates the score UI
-        /// </summary>
-        public void updateScoreUI()
+        private void UpdateScore(int points)
         {
-            this.scoreTextBlock.Text = "Score: " + this.Score;
+            this.AddScore(points);
         }
 
-        /// <summary>
-        ///     Displays the game over screen when player loses.
-        /// </summary>
-        public void displayGameLose()
-        {
-            this.gameOverBlock.Text = "Game Over! \n  You Lose";
-        }
-
-        /// <summary>
-        ///     Displays the game win screen when player wins.
-        /// </summary>
-        public void displayGameWin()
-        {
-            this.gameOverBlock.Text = "Game Over! \n  You Win";
-        }
 
         #endregion
     }

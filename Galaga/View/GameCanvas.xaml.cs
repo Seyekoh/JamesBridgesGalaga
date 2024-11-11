@@ -20,6 +20,9 @@ namespace Galaga.View
         private const double TimerInterval = 16;
 
         private readonly GameManager gameManager;
+        private readonly BulletManager bulletManager;
+        private readonly EnemyManager enemyManager;
+
         private readonly DispatcherTimer timer = new DispatcherTimer();
 
         private bool isMovingLeft;
@@ -47,7 +50,19 @@ namespace Galaga.View
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
 
-            this.gameManager = new GameManager(this.canvas, this.ScoreText, this.GameOverText, this.PlayerLives);
+            this.bulletManager = new BulletManager(Height);
+            this.enemyManager = new EnemyManager(this.canvas, bulletManager);
+            this.gameManager = new GameManager(this.canvas, this.bulletManager, this.enemyManager);
+
+            this.gameManager.OnScoreUpdated += this.UpdateScoreDisplay;
+            this.gameManager.OnPlayerLivesUpdated += this.UpdatePlayerLivesDisplay;
+            this.gameManager.OnGameOver += this.DisplayGameOver;
+
+            this.bulletManager.OnSpriteAdded += this.AddSpriteToCanvas;
+            this.bulletManager.OnSpriteRemoved += this.RemoveSpriteFromCanvas;
+
+            //this.enemyManager.OnSpriteAdded += this.AddSpriteToCanvas;
+            //this.enemyManager.OnSpriteRemoved += this.RemoveSpriteFromCanvas;
         }
 
         #endregion
@@ -101,6 +116,42 @@ namespace Galaga.View
                     this.isMovingRight = false;
                     break;
             }
+        }
+
+        private void UpdateScoreDisplay(int newScore)
+        {
+            this.ScoreText.Text = "Score: " + newScore;
+        }
+
+        private void UpdatePlayerLivesDisplay(int newLives)
+        {
+            this.PlayerLives.Text = "Lives: " + newLives;
+        }
+
+        private void DisplayGameOver(GlobalEnums.GameOverType gameOverType)
+        {
+            string gameOverMessage = string.Empty;
+
+            switch (gameOverType)
+            {
+                case GlobalEnums.GameOverType.WIN:
+                    gameOverMessage = "YOU WIN!";
+                    break;
+                case GlobalEnums.GameOverType.LOSE:
+                    gameOverMessage = "YOU LOSE!";
+                    break;
+            }
+            this.GameOverText.Text = "GAME OVER \n" + gameOverMessage;
+        }
+
+        private void AddSpriteToCanvas(UIElement sprite)
+        {
+            this.canvas.Children.Add(sprite);
+        }
+
+        private void RemoveSpriteFromCanvas(UIElement sprite)
+        {
+            this.canvas.Children.Remove(sprite);
         }
 
         #endregion

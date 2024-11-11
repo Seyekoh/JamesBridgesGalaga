@@ -33,6 +33,21 @@ namespace Galaga.Model
             TYPE4
         }
 
+        /// <summary>
+        ///     Enum for the game over types.
+        /// </summary>
+        public enum GameOverType
+        {
+            /// <summary>
+            ///     Represents a win.
+            /// </summary>
+            WIN,
+            /// <summary>
+            ///     Represents a loss.
+            /// </summary>
+            LOSE
+        }
+
         #endregion
     }
 }

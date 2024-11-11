@@ -12,6 +12,22 @@ namespace Galaga.Model
     /// </summary>
     public class EnemyManager
     {
+        #region Events
+
+        /// <summary>
+        ///     Delegate for updating the score.
+        /// </summary>
+        /// <param name="newScore">
+        ///     The new score to update to.
+        /// </param>
+        public delegate void UpdateScoreHandler(int newScore);
+
+        /// <summary>
+        ///     Event for updating the score.
+        /// </summary>
+        public event UpdateScoreHandler OnScoreUpdated;
+
+        #endregion
         #region Data members
 
         private const int EnemyType1Max = 3;
@@ -28,12 +44,11 @@ namespace Galaga.Model
         private readonly Canvas canvas;
         private readonly double canvasWidth;
 
-        private readonly GameManager gameManager;
         private BulletManager bulletManager;
-        private Ticker ticker;
         private readonly Random random = new Random();
 
         private readonly IList<Enemy> Enemies;
+        private Ticker ticker;
 
         #endregion
 
@@ -51,9 +66,6 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
         /// </summary>
-        /// <param name="gameManager">
-        ///     The game manager being used.
-        /// </param>
         /// <param name="canvas">
         ///     The canvas to draw the enemies on.
         /// </param>
@@ -61,14 +73,13 @@ namespace Galaga.Model
         ///     The bullet manager being used.
         /// </param>
         /// <exception cref="ArgumentNullException"></exception>
-        public EnemyManager(GameManager gameManager, Canvas canvas, BulletManager bulletManager)
+        public EnemyManager(Canvas canvas, BulletManager bulletManager)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
 
             this.canvas = canvas;
             this.canvasWidth = canvas.Width;
 
-            this.gameManager = gameManager;
             this.bulletManager = bulletManager;
 
             this.Enemies = new List<Enemy>();
@@ -82,8 +93,9 @@ namespace Galaga.Model
 
         private void initializeGame()
         {
-            this.ticker = this.gameManager.GetTicker();
+            this.ticker = new Ticker();
             this.ticker.Tick += this.timer_Tick;
+            this.ticker.Start();
             this.createAndPlaceEnemies();
         }
 
@@ -261,7 +273,7 @@ namespace Galaga.Model
             var points = 0;
             points += enemy.Score;
 
-            this.gameManager.AddScore(points);
+            this.OnScoreUpdated?.Invoke(points);
         }
 
         #endregion
