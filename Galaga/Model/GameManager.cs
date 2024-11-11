@@ -14,6 +14,8 @@ namespace Galaga.Model
 
         private const int PlayerShotDelay = 500;
         private const double PlayerOffsetFromBottom = 30;
+        private const int MaxPlayerLives = 3;
+
         private readonly Canvas canvas;
         private readonly double canvasHeight;
         private readonly double canvasWidth;
@@ -24,6 +26,7 @@ namespace Galaga.Model
         private readonly Ticker ticker;
         private readonly TextBlock scoreTextBlock;
         private readonly TextBlock gameOverBlock;
+        private readonly TextBlock playerLivesTextBlock;
 
         #endregion
 
@@ -34,6 +37,11 @@ namespace Galaga.Model
         /// </summary>
         public int Score { get; private set; }
 
+        /// <summary>
+        ///     Players Lives in the game.
+        /// </summary>
+        public int PlayerLives { get; private set; } = MaxPlayerLives;
+
         #endregion
 
         #region Constructors
@@ -41,7 +49,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameManager" /> class.
         /// </summary>
-        public GameManager(Canvas canvas, TextBlock scoreTextBlock, TextBlock gameOverBlock)
+        public GameManager(Canvas canvas, TextBlock scoreTextBlock, TextBlock gameOverBlock, TextBlock playerLivesTextBlock)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
 
@@ -51,6 +59,7 @@ namespace Galaga.Model
 
             this.scoreTextBlock = scoreTextBlock;
             this.gameOverBlock = gameOverBlock;
+            this.playerLivesTextBlock = playerLivesTextBlock;
 
             this.ticker = new Ticker();
             this.ticker.Tick += this.timer_Tick;
@@ -186,12 +195,31 @@ namespace Galaga.Model
         {
             var bullets = this.bulletManager.EnemyBullets;
 
+            var bulletToRemove = new Bullet();
+
             foreach (var enemyBullet in bullets)
             {
                 if (this.bulletManager.IsCollisionWithPlayer(enemyBullet, this.player))
                 {
-                    this.endGame();
+                    bulletToRemove = enemyBullet;
+                    this.updatePlayerLives();
                 }
+            }
+
+            this.bulletManager.RemoveEnemyBullet(bulletToRemove);
+        }
+
+        private void updatePlayerLives()
+        {
+            if (this.PlayerLives > 0)
+            {
+                this.PlayerLives--;
+                this.playerLivesTextBlock.Text = "Lives: " + this.PlayerLives;
+            }
+
+            if (this.PlayerLives == 0)
+            {
+                this.endGame();
             }
         }
 
