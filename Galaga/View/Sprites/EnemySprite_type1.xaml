@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Galaga.View.Sprites"
+    Loaded="OnLoaded"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -30,12 +31,14 @@
 
         <Line X1="20" Y1="5" X2="20" Y2="50" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
               HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
-        <Line X1="20" Y1="45" X2="20" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
+        <!--Engine Element -->
+        <Line x:Name="LeftEngine" X1="20" Y1="45" X2="20" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
               HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
 
         <Line X1="30" Y1="5" X2="30" Y2="50" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"
               HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
-        <Line X1="30" Y1="45" X2="30" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
+        <!--Engine Element -->
+        <Line x:Name="RightEngine" X1="30" Y1="45" X2="30" Y2="50" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
               HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="10" />
 
         <Line X1="30" Y1="25" X2="40" Y2="45" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5"

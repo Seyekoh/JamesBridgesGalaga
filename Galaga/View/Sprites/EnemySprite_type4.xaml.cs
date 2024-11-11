@@ -10,6 +10,12 @@ namespace Galaga.View.Sprites
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class EnemySprite_type4
     {
+        #region Data members
+
+        private bool isEngineColorToggled;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -18,6 +24,26 @@ namespace Galaga.View.Sprites
         public EnemySprite_type4()
         {
             this.InitializeComponent();
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///    Animates the engine color.
+        /// </summary>
+        public void ToggleEngineColor()
+        {
+            if (this.Engine != null)
+            {
+                var newColor = this.isEngineColorToggled ? Windows.UI.Colors.Red : Windows.UI.Colors.Maroon;
+                var brush = new Windows.UI.Xaml.Media.SolidColorBrush(newColor);
+
+                this.Engine.Stroke = brush;
+
+                this.isEngineColorToggled = !this.isEngineColorToggled;
+            }
         }
 
         #endregion

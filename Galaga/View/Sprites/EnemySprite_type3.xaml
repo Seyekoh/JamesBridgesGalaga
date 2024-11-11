@@ -25,7 +25,8 @@
             <RotateTransform Angle="180" CenterX="25" CenterY="30" />
         </Canvas.RenderTransform>
 
-        <Line X1="2" Y1="55" X2="48" Y2="55" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
+        <!--Engine Element-->
+        <Line x:Name="Engine"  X1="2" Y1="55" X2="48" Y2="55" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5"
               HorizontalAlignment="Center" VerticalAlignment="Center" />
         <Line X1="2" Y1="50" X2="48" Y2="50" Stroke="{StaticResource MainAccentColor}" StrokeThickness="5"
               HorizontalAlignment="Center" VerticalAlignment="Center" />

@@ -39,7 +39,8 @@
         <Line X1="4.75" Y1="34" X2="45.25" Y2="28" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Line X1="5.25" Y1="37" X2="44.75" Y2="25" Stroke="{StaticResource ShipBaseColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <Line X1="37" Y1="55" X2="13" Y2="55" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <!--Engine Element-->
+        <Line x:Name="Engine" X1="37" Y1="55" X2="13" Y2="55" Stroke="{StaticResource EngineFireColor}" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <Line X1="5" Y1="25" X2="5" Y2="37" Stroke="{StaticResource WeaponColor}" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Line X1="45" Y1="25" X2="45" Y2="37" Stroke="{StaticResource WeaponColor}" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>

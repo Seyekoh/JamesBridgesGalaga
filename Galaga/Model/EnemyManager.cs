@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -145,12 +146,36 @@ namespace Galaga.Model
 
         private async void timer_Tick(object sender, object e)
         {
+            this.animateEnemy();
             this.updateEnemyMovement(this.Enemies);
 
             this.moveEnemyBullets();
 
             this.letEnemyShoot();
             await Task.Delay(this.random.Next(EnemyFireDelayMin, EnemyFireDelayMax));
+        }
+
+        private void animateEnemy()
+        {
+            foreach (var enemy in this.Enemies)
+            {
+                if (enemy.Sprite is EnemySprite_type1 sprite)
+                {
+                    sprite.ToggleEngineColor();
+                }
+                else if (enemy.Sprite is EnemySprite_type2 sprite2)
+                {
+                    sprite2.ToggleEngineColor();
+                }
+                else if (enemy.Sprite is EnemySprite_type3 sprite3)
+                {
+                    sprite3.ToggleEngineColor();
+                }
+                else if (enemy.Sprite is EnemySprite_type4 sprite4)
+                {
+                    sprite4.ToggleEngineColor();
+                }
+            }
         }
 
         private void letEnemyShoot()
