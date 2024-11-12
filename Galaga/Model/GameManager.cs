@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -61,6 +62,7 @@ namespace Galaga.Model
 
         #region Data members
 
+        private const double TimerInterval = 16;
         private const double PlayerOffsetFromBottom = 30;
         private const int PlayerShotDelay = 500;
         private const int MaxPlayerLives = 3;
@@ -73,7 +75,7 @@ namespace Galaga.Model
 
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
-        private readonly Ticker ticker;
+        private readonly DispatcherTimer timer = new DispatcherTimer();
 
         #endregion
 
@@ -104,9 +106,9 @@ namespace Galaga.Model
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
 
-            this.ticker = new Ticker();
-            this.ticker.Tick += this.timer_Tick;
-            this.ticker.Start();
+            this.timer.Interval = TimeSpan.FromMilliseconds(TimerInterval);
+            this.timer.Tick += this.timer_Tick;
+            this.timer.Start();
 
             this.bulletManager = bulletManager;
             this.enemyManager = enemyManager;
@@ -259,13 +261,14 @@ namespace Galaga.Model
 
         private void loseGame()
         {
-            this.ticker.Stop();
+            this.timer.Stop();
+            this.canvas.Children.Remove(this.player.Sprite);
             this.OnGameOver?.Invoke(GlobalEnums.GameOverType.LOSE);
         }
 
         private void winGame()
         {
-            this.ticker.Stop();
+            this.timer.Stop();
             this.OnGameOver?.Invoke(GlobalEnums.GameOverType.WIN);
         }
 

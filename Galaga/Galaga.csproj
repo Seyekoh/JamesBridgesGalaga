@@ -138,8 +138,11 @@
     <Compile Include="View\Sprites\BaseSprite.xaml.cs">
       <DependentUpon>BaseSprite.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sprites\BulletSprite.xaml.cs">
-      <DependentUpon>BulletSprite.xaml</DependentUpon>
+    <Compile Include="View\Sprites\PlayerBulletSprite.xaml.cs">
+      <DependentUpon>PlayerBulletSprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\EnemyBulletSprite.xaml.cs">
+      <DependentUpon>EnemyBulletSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\EnemySprite_type1.xaml.cs">
       <DependentUpon>EnemySprite_type1.xaml</DependentUpon>
@@ -186,7 +189,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\BulletSprite.xaml">
+    <Page Include="View\Sprites\PlayerBulletSprite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Sprites\EnemyBulletSprite.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

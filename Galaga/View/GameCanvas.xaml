@@ -9,7 +9,7 @@
 
     <Canvas x:Name="canvas" Width="720" Height="600" Background="Black">
         <TextBlock x:Name="ScoreText" Text="Score: 0" FontSize="24" />
-        <TextBlock x:Name="GameOverText" Text="" FontSize="125" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.ZIndex="10" />
+        <TextBlock x:Name="GameOverText" Text="" FontSize="125" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.ZIndex="10" Canvas.Top="37" />
         <TextBlock x:Name="PlayerLives" Text="Lives: 3" FontSize="24" HorizontalAlignment="Center" Canvas.Top="37" VerticalAlignment="Top"/>
     </Canvas>
 </Page>

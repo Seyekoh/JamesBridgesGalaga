@@ -52,7 +52,7 @@ namespace Galaga.Model
                 return null;
             }
 
-            var bullet = new Bullet();
+            var bullet = new Bullet(this);
             bullet.X = X + Width / 2.0 - bullet.Width / 2;
             bullet.Y = Y;
 

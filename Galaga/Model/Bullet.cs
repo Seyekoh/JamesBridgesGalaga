@@ -21,7 +21,19 @@ namespace Galaga.Model
         /// </summary>
         public Bullet()
         {
-            Sprite = new BulletSprite();
+            Sprite = new EnemyBulletSprite();
+            SetSpeed(SpeedXDirection, SpeedYDirection);
+        }
+
+        /// <summary>
+        ///     Constructor for a player's bullet
+        /// </summary>
+        /// <param name="player">
+        ///     The player that shot the bullet.
+        /// </param>
+        public Bullet(Player player)
+        {
+            Sprite = new PlayerBulletSprite();
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 

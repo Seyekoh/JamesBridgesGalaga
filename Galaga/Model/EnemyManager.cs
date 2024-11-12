@@ -201,15 +201,12 @@ namespace Galaga.Model
 
             foreach (var enemy in shootingEnemies)
             {
-                if (this.random.Next(0, 10) < 9) // 10% chance to shoot
+                if (this.random.Next(0, 10) >= 9) // 10% chance to shoot
                 {
-                    return;
-                }
-
-                var bullet = enemy.Shoot();
-                if (bullet != null)
-                {
+                    var bullet = enemy.Shoot();
+                    
                     this.bulletManager.AddEnemyBullet(bullet);
+                    
                 }
                 
             }
